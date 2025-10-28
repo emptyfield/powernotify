@@ -1,0 +1,15 @@
+[package]
+name = "powernotify"
+version = "0.1.0"
+edition = "2024"
+license = "Apache-2.0"
+
+[dependencies]
+clap = { version = "4.5.48", features = ["derive"] }
+indexmap = { version = "2.12.0", features = ["std", "serde"] }
+notify-rust = "4.11.7"
+serde = "1.0.228"
+smol = "2.0.2"
+toml = "0.9.8"
+upower_dbus = { git = "https://github.com/pop-os/dbus-settings-bindings.git", version = "0.3.2" }
+zbus = "5.11.0"
