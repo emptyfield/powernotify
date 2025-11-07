@@ -159,7 +159,7 @@ urgency = "critical"
 cmd = "ffplay -autoexit -nodisp /usr/share/sounds/freedesktop/stereo/dialog-error.oga"
 # Add actions to the critical notification for quick power saving.
 [5.actions]
-"Enable Extreme Power Save" = "brightnessctl s 10"
+"Enable Extreme Power Save" = "brightnessctl s 10%"
 "Hibernate" = "systemctl hibernate"
 "Suspend" = "systemctl suspend"
 ```
