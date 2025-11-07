@@ -22,7 +22,7 @@ You must have the `upower` service running on your system, which is standard on 
 1. Clone the repository:
 
     ```sh
-    git clone https://github.com/your-username/powernotify.git
+    git clone https://github.com/emptyfield/powernotify.git
     cd powernotify
     ```
 
