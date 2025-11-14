@@ -1,6 +1,6 @@
 use clap::Parser;
 use powernotify::config::Config;
-use powernotify::power::{PowerListener, init_upower_proxy};
+use powernotify::power::{init_upower_proxy, PowerListener};
 use smol::future;
 use std::env;
 use std::path::PathBuf;
@@ -71,8 +71,27 @@ fn main() {
 
         let pl = PowerListener::new(&upower_proxy);
 
-        let on_battery_fut = pl.listen_on_battery(config.rule_ac, config.rule_bat);
-        let percentage_fut = pl.listen_percentage(&config.percentage_rules);
+        let on_battery_fut = pl.listen_on_battery(async |is_on_battery| {
+            let active_rule = if is_on_battery {
+                &config.rule_bat
+            } else {
+                &config.rule_ac
+            };
+
+            if let Some(rule) = active_rule {
+                eprintln!(
+                    "Found rule on {}",
+                    if is_on_battery { "battery" } else { "AC" }
+                );
+                rule.execute().await;
+            };
+        });
+        let percentage_fut = pl.listen_percentage(async |percentage| {
+            if let Some(rule) = config.percentage_rules.get(&percentage) {
+                eprintln!("Found rule on {}%", percentage);
+                rule.execute().await;
+            }
+        });
 
         let _ = future::zip(on_battery_fut, percentage_fut).await;
     });
